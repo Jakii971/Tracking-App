@@ -1,11 +1,11 @@
-import { View, Text } from 'react-native'
+import { View, Text, SafeAreaView } from 'react-native'
 import React from 'react'
 
 const Recap = () => {
   return (
-    <View>
+    <SafeAreaView className="flex-1 items-center justify-center">
       <Text>Recap</Text>
-    </View>
+    </SafeAreaView>
   )
 }
 
