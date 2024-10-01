@@ -39,7 +39,7 @@ const MyLineChart = () => {
 							},
 						],
 					}}
-					width={screenWidth * 2} // Lebar chart lebih besar dari layar untuk memungkinkan scroll
+					width={screenWidth * 2}
 					height={220}
 					chartConfig={{
 						backgroundGradientFrom: "#efefef",

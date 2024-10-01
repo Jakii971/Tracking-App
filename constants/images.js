@@ -8,5 +8,7 @@ import crown from "../assets/images/crown.png";
 import run from "../assets/images/run.png";
 import walkRecap from "../assets/images/walk-recap.png";
 import walk from "../assets/images/walk.png";
+import ppBlank from "../assets/images/pp-blank.png";
+import marker from "../assets/images/custom-marker.png";
 
-export default { signIn, signUp, first, bicycle, blank, complete, crown, run, walkRecap, walk };
+export default { signIn, signUp, first, bicycle, blank, complete, crown, run, walkRecap, walk, ppBlank, marker };

@@ -1,14 +1,15 @@
 import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
-import React from "react";
+import React, { forwardRef } from "react";
 import { icons } from "../constants";
 
-const SearchInput = ({ placeholder, handlePress }) => {
+const SearchInput = forwardRef(({ placeholder, handlePress, otherStyles, editable }, ref) => {
 	return (
-		<TouchableOpacity className="w-full h-14 border border-input bg-input rounded-lg items-center flex-row p-1" onPress={handlePress} activeOpacity={0.9} nextFocusDown={3}>
+		<TouchableOpacity className={`w-full h-14 border rounded-lg items-center flex-row p-1 ${otherStyles}`} onPress={handlePress}>
 			<TextInput
 				placeholder={placeholder}
-				editable={false}
+				editable={editable}
 				className="px-4 flex-1 text-base font-pregular"
+				ref={ref} // Ref di sini
 			/>
 			<TouchableOpacity
 				className="w-12 h-full items-center justify-center bg-secondary rounded-md"
@@ -18,6 +19,6 @@ const SearchInput = ({ placeholder, handlePress }) => {
 			</TouchableOpacity>
 		</TouchableOpacity>
 	);
-};
+});
 
 export default SearchInput;

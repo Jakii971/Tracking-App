@@ -24,9 +24,9 @@ const Home = () => {
 	}, []);
 
 	const pinterest = [
-		"https://i.pinimg.com/originals/fe/b6/b6/feb6b68d5ffc34b5f5f03f72b035f04e.gif",
-		"https://i.pinimg.com/originals/5a/71/b2/5a71b2e7586d4235d290ef86167a7357.gif",
-		"https://i.pinimg.com/originals/54/2e/bd/542ebd87e0a1b30129d9eef3ce1cc405.gif",
+		"https://i.pinimg.com/564x/b0/01/bd/b001bd62485e326a3d5a9b299dd803c4.jpg",
+		"https://i.pinimg.com/564x/28/c1/df/28c1df0b7ee4d2cf5142369a0c1e0f64.jpg",
+		"https://i.pinimg.com/564x/46/c3/60/46c3603f35aa1dbe7624037d35d427e3.jpg",
 	];
 
 	return (
@@ -68,6 +68,8 @@ const Home = () => {
 					handlePress={() => {
 						router.push("/searchScreen");
 					}}
+					otherStyles={"bg-input border-input"}
+					editable={false}
 				/>
 				<CorouselImages images={pinterest} />
 
