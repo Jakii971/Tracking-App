@@ -4,9 +4,27 @@ import MapView, { Marker, Polyline } from "react-native-maps";
 import * as Location from "expo-location";
 import { images } from "../constants";
 
-export default function Maps() {
+export default function Maps({onDistanceUpdate}) {
 	const [location, setLocation] = useState(null);
 	const [routeCoordinates, setRouteCoordinates] = useState([]);
+	const [totalDistance, setTotalDistance] = useState(0);
+
+	const haversineDistance = (coords1, coords2) => {
+		const toRad = (x) => (x * Math.PI) / 180;
+		const R = 6371; // Radius Bumi dalam kilometer
+		const dLat = toRad(coords2.latitude - coords1.latitude);
+		const dLon = toRad(coords2.longitude - coords1.longitude);
+		const lat1 = toRad(coords1.latitude);
+		const lat2 = toRad(coords2.latitude);
+	
+		const a =
+			Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+			Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		const distance = R * c;
+		return distance; // Jarak dalam kilometer
+	};
+	
 
 	useEffect(() => {
 		(async () => {
@@ -30,6 +48,13 @@ export default function Maps() {
 				(newLocation) => {
 					const { latitude, longitude } = newLocation.coords;
 					const newCoordinate = { latitude, longitude };
+
+					if (routeCoordinates.length > 0) {
+            const lastCoordinate = routeCoordinates[routeCoordinates.length - 1];
+            const distance = haversineDistance(lastCoordinate, newCoordinate);
+            setTotalDistance((prevDistance) => prevDistance + distance);
+            onDistanceUpdate(totalDistance + distance); // Kirim jarak ke parent
+          }
 
 					setLocation(newCoordinate);
 					setRouteCoordinates((prevCoords) => [...prevCoords, newCoordinate]);

@@ -12,7 +12,7 @@ export default function Index() {
     const timer = setTimeout(() => {
       setIsLoading(false);
       router.push("/home");
-    }, 2000);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -33,3 +33,5 @@ export default function Index() {
     </Pressable>
   );
 }
+
+

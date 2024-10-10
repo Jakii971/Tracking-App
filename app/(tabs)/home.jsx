@@ -53,7 +53,8 @@ const Home = () => {
 					<TouchableOpacity
 						className="mt-1.5"
 						onPress={() => {
-							router.push("/notificationScreen");
+							// router.push("/notificationScreen");
+							router.push("/testScreen");
 						}}
 					>
 						<Image

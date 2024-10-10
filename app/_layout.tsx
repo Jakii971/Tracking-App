@@ -30,6 +30,8 @@ const RootLayout = () => {
 			<Stack.Screen name="index" options={{headerShown: false}}/>
 			<Stack.Screen name="notificationScreen" options={{ title: "Notification" }} />
 			<Stack.Screen name="searchScreen" options={{ title: "Search" }} />
+			<Stack.Screen name="updateProfileScreen" options={{ headerShown: false }} />
+			<Stack.Screen name="testScreen" options={{ headerShown: false }} />
 			<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 			<Stack.Screen name="(auth)" options={{ headerShown: false }} />
 		</Stack>
