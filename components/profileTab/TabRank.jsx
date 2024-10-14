@@ -80,6 +80,9 @@ const TabRank = () => {
 					style={style.boxShadow}
 				>
 					<View className="items-center justify-center w-28">
+						<Text className="font-pregular">
+							#<Text className="font-pbold text-base">2</Text>
+						</Text>
 						<Image source={images.ppBlank} className="w-[60px] h-[60px] p-5" />
 						<Text className="font-pbold text-sm flex-wrap text-center">
 							{secondRank.name}
@@ -107,8 +110,10 @@ const TabRank = () => {
 						<Text className="font-pmedium text-xs">{firstRank.username}</Text>
 					</LinearGradient>
 
-
 					<View className="items-center justify-center w-28">
+						<Text className="font-pregular">
+							#<Text className="font-pbold text-base">3</Text>
+						</Text>
 						<Image source={images.ppBlank} className="w-[60px] h-[60px] p-5" />
 						<Text className="font-pbold text-sm flex-wrap text-center">
 							{thirdRank.name}

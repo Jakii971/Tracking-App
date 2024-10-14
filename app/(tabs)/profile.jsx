@@ -15,6 +15,11 @@ import { TabView, TabBar } from "react-native-tab-view";
 import { icons, images } from "../../constants";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Rank, Friend, Profile } from "../../components/profileTab";
+import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
+import { selectUser } from "../../redux/slice/userSlice";
+import { useSelector } from "react-redux";
+
 
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
@@ -36,6 +41,15 @@ const Bio = () => {
 		{ key: "friend", title: "Friend" },
 		{ key: "profile", title: "Profile" },
 	]);
+	const userData = useSelector(selectUser);
+
+	/**
+	 * curent user data autentication
+	 */
+	const { displayName } = auth().currentUser;
+	useEffect(() => {
+		console.log('user data profile: ',userData);
+	})
 
 	/**
 	 * ref
@@ -212,14 +226,15 @@ const Bio = () => {
 				style={[styles.header, { transform: [{ translateY: y }] }]}
 			>
 				<TouchableOpacity activeOpacity={1}>
-					<View className="bg-white rounded-t-[60px] h-[300px] -mb-9">
+					<View className="bg-white rounded-t-[60px] h-[325px] -mb-9">
 						<View className="p-2 items-center -top-16">
 							<Image
 								source={images.ppBlank}
 								resizeMode="contain"
 								className="w-28 h-28"
 							/>
-							<Text className="text-2xl font-pbold mt-3">Tom</Text>
+							<Text className="text-2xl font-pbold mt-3">{userData?.name ? userData.name : displayName}</Text>
+							<Text className="text-sm font-pregular">@{displayName}</Text>
 							<View
 								className="rounded-xl bg-primary flex-row p-2 items-center justify-center mt-5 w-[90%] self-center"
 								style={styles.boxShadow}
@@ -286,7 +301,10 @@ const Bio = () => {
 
 	const renderLabel = ({ route, focused }) => {
 		return (
-			<Text style={[styles.label, { color: focused ? '#FBBA18' : '#000' }]} className="font-psemibold">
+			<Text
+				style={[styles.label, { color: focused ? "#FBBA18" : "#000" }]}
+				className="font-psemibold"
+			>
 				{route.title}
 			</Text>
 		);
@@ -294,23 +312,16 @@ const Bio = () => {
 
 	const renderScene = ({ route }) => {
 		const focused = route.key === routes[tabIndex].key;
-		let noCol;
 		let data;
 		let renderItem;
 		switch (route.key) {
 			case "rank":
-				// data = tab1Data;
-				// noCol = 2
 				renderItem = renderTabRank;
 				break;
 			case "friend":
-				// data = tab2Data;
-				// noCol = 3
 				renderItem = renderTabFriend;
 				break;
 			case "profile":
-				// data = tab3Data;
-				// noCol = 3
 				renderItem = renderTabProfile;
 				break;
 

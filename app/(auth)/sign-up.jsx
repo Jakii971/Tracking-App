@@ -1,12 +1,57 @@
 import { View, Text, Image } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { CustomButton, FormField } from "../../components";
 import { Link } from "expo-router";
 import { images } from "../../constants";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
+import { useDispatch } from "react-redux";
+import {fetchUserData} from "../../redux/slice/userSlice";
 
 const SignUp = () => {
+	const [username, setUsername] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const dispatch = useDispatch();
+
+	const handleSignUp = async () => {
+		if (!username || !email || !password) {
+			alert("Please fill in all fields.");
+			return;
+		}
+		try {
+			const userCredential = await auth().createUserWithEmailAndPassword(
+				email,
+				password
+			);
+			await userCredential.user.updateProfile({
+				displayName: username.toLowerCase(),
+			});
+
+			const userId = userCredential.user.uid;
+			const userData = {
+				uid: userId,
+				email: email,
+				name: "",
+				nrp: "",
+				company: "",
+				divisi: "",
+				contact: "",
+				foto_profile: "",
+			};
+			await firestore().collection("users").doc(userId).set(userData);
+			console.log("Akun pengguna berhasil dibuat dan data disimpan!");
+
+			dispatch(fetchUserData());
+
+			alert("Check your email");
+		} catch (err) {
+			console.log(err);
+			alert("Registrasi gagal", err);
+		}
+	};
+
 	return (
 		<SafeAreaView className="flex-1 justify-center items-center bg-primary relative">
 			<Image
@@ -20,19 +65,26 @@ const SignUp = () => {
 					<FormField
 						placeholder={"Username"}
 						inputStyle={"h-16 rounded-full mb-4"}
+						handleChange={(text) => setUsername(text)}
+						value={username}
 					/>
 					<FormField
 						placeholder={"Email"}
 						inputStyle={"h-16 rounded-full mb-4"}
+						handleChange={(text) => setEmail(text)}
+						value={email}
 					/>
 					<FormField
 						placeholder={"Password"}
 						inputStyle={"h-16 rounded-full mb-5"}
+						handleChange={(text) => setPassword(text)}
+						value={password}
 					/>
 					<CustomButton
 						containerStyles={"bg-black rounded-full mb-4"}
 						textStyle={"text-white"}
 						title={"Sign Up"}
+						handlePress={handleSignUp}
 					/>
 				</View>
 				<View className="bg-input w-[80%] h-0.5" />

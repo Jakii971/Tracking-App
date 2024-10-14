@@ -6,12 +6,14 @@ import {
 	TouchableOpacity,
 	ScrollView,
 	TextInput,
-  Modal,
+	Modal,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { icons, images } from "../constants";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
+import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -19,13 +21,43 @@ const aspectRatio = 780 / 597;
 const height = windowWidth / aspectRatio;
 
 const UpdateProfileScreen = () => {
-  const [modalSaveVisible, setModalSaveVisible] = useState(false);
+	const [modalSaveVisible, setModalSaveVisible] = useState(false);
+	const userId = auth().currentUser.uid;
+	const [formData, setFormData] = useState({
+		name: "",
+		email: "",
+		nrp: "",
+		company: "",
+		divisi: "",
+		contact: "",
+	});
 
-  const handleSave = () => {
-		setModalSaveVisible(true);
-    setTimeout(() => {
-      router.back();
-    }, 1500);
+	useEffect(() => {
+		const fetchData = async () => {
+				try {
+						const userDoc = await firestore().collection("users").doc(userId).get();
+						if (userDoc.exists) {
+								setFormData(userDoc.data());
+						}
+				} catch (error) {
+						console.error("Error fetching user data: ", error);
+				}
+		};
+
+		fetchData();
+}, [userId]);
+
+	const handleSave = async () => {
+		try {
+			await firestore().collection("users").doc(userId).update(formData);
+			console.log("User data successfully saved!");
+			setModalSaveVisible(true);
+			setTimeout(() => {
+				router.back();
+			}, 1500);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
@@ -36,7 +68,7 @@ const UpdateProfileScreen = () => {
 				className="absolute"
 				style={{ width: "100%", height }}
 			/>
-      <Modal
+			<Modal
 				animationType="fade"
 				transparent={true}
 				visible={modalSaveVisible}
@@ -49,12 +81,16 @@ const UpdateProfileScreen = () => {
 					<View className="w-80 bg-white shadow-lg p-5 items-center rounded-3xl">
 						<Text className="text-2xl font-pbold">Saved</Text>
 						<View className="flex-row justify-center items-center space-x-5 mb-9 mt-5">
-							<Image source={images.complete} className='w-32 h-32' resizeMode="contain"/>
+							<Image
+								source={images.complete}
+								className="w-32 h-32"
+								resizeMode="contain"
+							/>
 						</View>
 					</View>
 				</View>
 			</Modal>
-      
+
 			<ScrollView>
 				<View className="bg-white rounded-t-[60px] mt-32 mb-16">
 					<View className="p-2 items-center -top-16">
@@ -73,6 +109,10 @@ const UpdateProfileScreen = () => {
 										<TextInput
 											className="flex-1"
 											placeholder="Masukkan disini..."
+											value={formData.name}
+											onChangeText={(text) =>
+												setFormData({ ...formData, name: text })
+											}
 										/>
 										<Image source={icons.edit} className="w-6 h-6 ml-2" />
 									</View>
@@ -85,6 +125,10 @@ const UpdateProfileScreen = () => {
 										<TextInput
 											className="flex-1"
 											placeholder="Masukkan disini..."
+											value={formData.username}
+											onChangeText={(text) =>
+												setFormData({ ...formData, username: text })
+											}
 										/>
 										<Image source={icons.edit} className="w-6 h-6 ml-2" />
 									</View>
@@ -103,6 +147,10 @@ const UpdateProfileScreen = () => {
 										<TextInput
 											className="flex-1"
 											placeholder="Masukkan disini..."
+											value={formData.email}
+											onChangeText={(text) =>
+												setFormData({ ...formData, email: text })
+											}
 										/>
 										<Image source={icons.edit} className="w-6 h-6 ml-2" />
 									</View>
@@ -120,6 +168,10 @@ const UpdateProfileScreen = () => {
 										<TextInput
 											className="flex-1"
 											placeholder="Masukkan disini..."
+											value={formData.nrp}
+											onChangeText={(text) =>
+												setFormData({ ...formData, nrp: text })
+											}
 										/>
 										<Image source={icons.edit} className="w-6 h-6 ml-2" />
 									</View>
@@ -137,6 +189,10 @@ const UpdateProfileScreen = () => {
 										<TextInput
 											className="flex-1"
 											placeholder="Masukkan disini..."
+											value={formData.company}
+											onChangeText={(text) =>
+												setFormData({ ...formData, company: text })
+											}
 										/>
 										<Image source={icons.edit} className="w-6 h-6 ml-2" />
 									</View>
@@ -154,6 +210,10 @@ const UpdateProfileScreen = () => {
 										<TextInput
 											className="flex-1"
 											placeholder="Masukkan disini..."
+											value={formData.divisi}
+											onChangeText={(text) =>
+												setFormData({ ...formData, divisi: text })
+											}
 										/>
 										<Image source={icons.edit} className="w-6 h-6 ml-2" />
 									</View>
@@ -171,11 +231,18 @@ const UpdateProfileScreen = () => {
 										<TextInput
 											className="flex-1"
 											placeholder="Masukkan disini..."
+											value={formData.contact}
+											onChangeText={(text) =>
+												setFormData({ ...formData, contact: text })
+											}
 										/>
 										<Image source={icons.edit} className="w-6 h-6 ml-2" />
 									</View>
 								</View>
-								<TouchableOpacity className="bg-primary rounded-3xl px-3 py-2 mt-5 items-center" onPress={handleSave}>
+								<TouchableOpacity
+									className="bg-primary rounded-3xl px-3 py-2 mt-5 items-center"
+									onPress={handleSave}
+								>
 									<Text className="text-white font-pbold">Save</Text>
 								</TouchableOpacity>
 								<TouchableOpacity

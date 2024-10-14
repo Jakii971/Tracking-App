@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "819660582207",
+    "project_id": "track-app-d0fcf",
+    "storage_bucket": "track-app-d0fcf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819660582207:android:b99075605a2c1f1025778a",
+        "android_client_info": {
+          "package_name": "com.jakjaki.TrackingApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkLoQJNtqgNTQlyHCr22H57q_fKwcDjZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

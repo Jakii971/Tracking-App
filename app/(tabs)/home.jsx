@@ -5,22 +5,31 @@ import {
 	ScrollView,
 	TouchableOpacity,
 	RefreshControl,
+	ActivityIndicator,
 } from "react-native";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { icons, images } from "../../constants";
 import { SearchInput, CorouselImages, MyLineChart } from "../../components";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { router } from "expo-router";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/slice/userSlice";
 
 const Home = () => {
-	const [refreshing, setRefreshing] = React.useState(false);
+	const [refreshing, setRefreshing] = useState(false);
 
-	const onRefresh = React.useCallback(() => {
+	const userData = useSelector(selectUser);
+
+	useEffect(() => {
+		console.log("data user Home : ", userData);
+	}, []);
+
+	const onRefresh = useCallback(() => {
 		setRefreshing(true);
 		setTimeout(() => {
 			setRefreshing(false);
-		}, 5000);
+		}, 2000);
 	}, []);
 
 	const pinterest = [
@@ -44,7 +53,9 @@ const Home = () => {
 			>
 				<View className="justify-between items-start flex-row mb-6">
 					<View>
-						<Text className="text-2xl font-pbold text-black">Hi Tom</Text>
+						<Text className="text-2xl font-pbold text-black">
+							Hi {userData?.name || "Anonymous"}
+						</Text>
 						<Text className="text-sm font-psemibold text-slate-400">
 							Welcome to Tracking App
 						</Text>
@@ -53,8 +64,7 @@ const Home = () => {
 					<TouchableOpacity
 						className="mt-1.5"
 						onPress={() => {
-							// router.push("/notificationScreen");
-							router.push("/testScreen");
+							router.push("/notificationScreen");
 						}}
 					>
 						<Image
